@@ -1,0 +1,3 @@
+sh /commands/init.sh
+
+sh /commands/start.sh
