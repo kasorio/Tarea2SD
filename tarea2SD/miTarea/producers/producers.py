@@ -1,3 +1,5 @@
+#codigo utilizado de github proporcionado por los ayudantes
+
 from kafka import KafkaProducer
 from json import dumps
 from datetime import datetime
@@ -23,19 +25,19 @@ def generar_nombre_correo():
     email = f"{nombre}@example.com"
     return nombre, email
 
-# Mapeo de unidades a números de partición
-unidad_particion_map = {
+
+tipo_mensaje = {
     'normal': 0,
-    'pagado': 1,
+    'Paid': 1,
 }
 
-stock_mote_con_huesillo = 20  # Stock inicial de Mote con Huesillo
+stock_mote_con_huesillo = 30  # Stock inicial de Mote con Huesillo
 
 def enviar_formulario():
     topic = topic_formulario
-    tipo = random.choice(['normal', 'pagado'])  # Seleccionar aleatoriamente un tipo
+    tipo = random.choice(['normal', 'Paid'])  # Seleccionar aleatoriamente un tipo
     try:
-        particion = unidad_particion_map[tipo]
+        particion = tipo_mensaje[tipo]
         for _ in range(10):  # Genera 10 datos aleatorios
             id = generar_id()
             nombre, email = generar_nombre_correo()
@@ -108,7 +110,7 @@ if __name__ == "__main__":
 
         elif opcion == "2":
             # Ingredientes agotados para Mote con Huesillo
-            ingredientes = ['durazno', 'mote', 'azúcar', 'cáscara de limón', 'agua', 'hielo']
+            ingredientes = ['durazno', 'mote', 'azúcar', 'cáscara de limón', 'agua', 'hielo','clavo de olor','canela']
             ingrediente = random.choice(ingredientes)
             reponer_ingredientes(ingrediente)
 

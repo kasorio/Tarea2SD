@@ -21,28 +21,12 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
+    volumes:
+      - ./commands:/commands
   
   producer:
     build: ./producers
     container_name: producer_kafka
-    depends_on:
-      - kafka
-      - zookeeper
-    volumes:
-      - ./producers:/usr/src/app
-
-  producer2:
-    build: ./producers
-    container_name: producer_kafka2
-    depends_on:
-      - kafka
-      - zookeeper
-    volumes:
-      - ./producers:/usr/src/app
-
-  producer3:
-    build: ./producers
-    container_name: producer_kafka3
     depends_on:
       - kafka
       - zookeeper
@@ -60,5 +44,26 @@ services:
       - producer
     volumes:
       - ./consumers:/usr/src/app
+  
+  #################-example-app-#####################
+  example-app:
+    build: ./db-app
+    container_name: example-app
+    volumes:
+      - ./db-app:/usr/src/app
+    
+  ###################-POSTGRESQL-##########################
+  db:
+    container_name: db
+    image: postgres:16.0-alpine3.18
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=proyecto
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/some_name/
+    ports:
+      - "5433:5432"
 
     

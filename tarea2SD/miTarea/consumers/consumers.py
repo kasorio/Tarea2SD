@@ -1,3 +1,5 @@
+#codigo utilizado de github proporcionado por los ayudantes
+
 from kafka import KafkaConsumer
 import psycopg2
 import json
@@ -16,7 +18,8 @@ DATABASE_CONFIG = {
 }
 
 def generar_id():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+    return ''.join(random.choices(string.digits, k=10))
+    #return ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
 
 def consume_messages(topic_name, table_name):
     # Conectar a PostgreSQL
@@ -52,6 +55,13 @@ def consume_messages(topic_name, table_name):
             
             columns = ", ".join(message_with_timestamp.keys())
             values = tuple(message_with_timestamp.values())
+
+            #insertar en base de datos
+            #insert_query = f"INSERT INTO {table_name} ({columns}) VALUES {tuple(['%s' for _ in values])}"
+            insert_query = f"INSERT INTO {table_name} ({columns}) VALUES ({', '.join(['%s' for _ in values])})"
+
+            cursor.execute(insert_query, values)
+            conn.commit()
 
             cont += 1
     finally:

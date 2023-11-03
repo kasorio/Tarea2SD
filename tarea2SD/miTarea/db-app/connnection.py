@@ -8,5 +8,3 @@ def init_db():
         host='db',
     )
     return conn
-
-    
